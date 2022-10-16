@@ -1,0 +1,273 @@
+<head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+body {
+	background-color:#000;
+	margin:-10;
+	overflow: hidden;
+	font-family: 'Ubuntu', sans-serif;
+}
+.bg {
+	margin:0;
+	height:100%;
+	background: url(https://i.pinimg.com/736x/db/86/4f/db864f597a08dc61666c9cee0b711972.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	filter:blur(5px);
+}
+.clock-box {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 50%;
+	background-color: rgba(0,0,0,0.5);
+	padding:20px;
+	border-radius:40px;
+	border: 2px solid white;
+}
+#clock {
+	font-size:9vw;
+	text-align: center;
+	color: #fff;
+	line-height: 2px;
+}
+.hiden {
+	font-size:1px;
+	text-align: center;
+	color:rgba(255, 255, 255, 0);
+}
+.dopari {
+	position: absolute;
+	font-size:2vw;
+	text-align: center;
+	color: #fff;
+	line-height: 2px;
+	left: 21%;
+	top: 15%;
+}
+.container-btn {
+	position: absolute;
+	top:0px;
+	right:0px;
+	width:20%;
+	height: 5em;
+	z-index: 99;
+	display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.popup {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 60%;
+	background-color: rgba(0,0,0,0.5);
+	padding:20px;
+	border-radius:40px;
+	z-index: 999;
+	display: none;
+	border: 2px solid white;
+}
+
+#popup-title {
+	font-size:2vw;
+	color: #fff;
+	line-height: 2px;
+}
+#shedule {
+	font-size:2vw;
+	color: #fff;
+}
+#group-selector-title {
+	font-size:2vw;
+	text-align: center;
+	color: #fff;
+	line-height: 2px;
+}
+#btn-popup-close {
+	background-color: rgba(128, 128, 128, 0.5);
+	border: none;
+	border-radius:20px;
+	color: #fff;
+	font-weight: bold;
+	cursor: pointer;
+	position: absolute;
+    top: 5px;
+    right: 5px;
+	width: 2vw;
+	height: 2vw;
+	border: 2px solid white;
+}
+#btn-skin , #btn-group {
+	margin: 5%;
+	background-color: rgba(0,0,0,0.5);
+	border: none;
+	border-radius:20px;
+	color: #fff;
+	font-weight: bold;
+	cursor: pointer;
+	transition-duration: 0.3s;
+	border: 2px solid white;
+}
+#btn-skin:hover , #btn-group:hover {
+	background-color: rgba(128, 128, 128, 0.5);
+	transition-duration: 0.3s;
+}
+</style>
+</head>
+
+<body>
+<script>
+	var storage = window.localStorage;
+	// [день[группа[массив расписания]]]
+	var shedule = [
+		[
+			["Биология","Русская литература","Математика","Иностранный язык"]
+		],
+		[
+			["Биология","Русская литература","Математика","Иностранный язык"]
+		],
+		[
+			["Биология","Русская литература","Математика","Иностранный язык"]
+		],
+		[
+			["Биология","Русская литература","Математика","Иностранный язык"]
+		],
+		[
+			["Биология","Русская литература","Математика","Иностранный язык"]
+		]
+	]
+	
+
+	window.onload = function() {
+		var gs = document.getElementById('group-selector')
+		gs.onchange = function() {
+			storage.setItem('group_id',gs.value);
+			writeSchedule(gs.value)
+		};
+		
+		// Проверка заполнена ли ячейка с ссылкой на изображение фона, если нет - ставит стандартный
+		if(storage.getItem('bgurl') != null){
+			document.getElementsByClassName('bg')[0].style.backgroundImage = "url("+storage.getItem('bgurl')+")";
+		} else {
+			storage.setItem('bgurl',"https://i.pinimg.com/736x/db/86/4f/db864f597a08dc61666c9cee0b711972.jpg");
+			document.getElementsByClassName('bg')[0].style.backgroundImage = "url("+storage.getItem('bgurl')+")";
+		}
+
+		// Проверка выбрана ли группа, если нет - то выставляет id 0
+		if(storage.getItem('group_id') != null){
+			writeSchedule(storage.getItem('group_id'));
+		} else {
+			storage.setItem('group_id',0);
+		}
+
+		// Запуск часов
+		var x = setInterval(update, 1000)
+	}
+
+	// Функция написания расписания по id группы
+	function writeSchedule(group_id) {
+		var weekday = new Date().getDay()
+		document.getElementById('shedule').innerHTML = shedule[weekday-1][group_id];
+	}
+
+	// Функция смены фона
+	function changeBG() {
+		var url = prompt('Ссылка на файл фона',storage.getItem('bgurl'))
+		if(url != null){
+			document.getElementsByClassName('bg')[0].style.backgroundImage = "url("+url+")"; 
+			storage.setItem('bgurl',url);
+		}
+	}
+
+	//Функции показа/скрытия окна смены группы 
+	function showChangeGroup() {
+		document.getElementsByClassName('popup')[0].style.display = 'inline';
+	}
+	function hideChangeGroup() {
+		document.getElementsByClassName('popup')[0].style.display = 'none';
+	}
+
+	// Основная функция часов, в начале из-за не стабильного API происходит получение отклонения времени несколько раз(нужно для точного отображения времени)
+	function update() {
+		if (document.getElementById("myspan").childNodes[0].textContent == "notdiff"){
+			fetch("https://worldtimeapi.org/api/timezone/Asia/Almaty")
+				.then(response => response.json())
+				.then(data => {
+			try	{
+				console.log(diff)
+			}
+			catch {
+				console.log("Апи говно")
+				diff = new Date() - new Date(data.unixtime*1000)
+				document.getElementById("myspan").innerHTML = diff
+			}
+		})}
+		let d = new Date() - diff;
+
+		let b11 = new Date(new Date (new Date( new Date().setHours(8) ).setMinutes(0)).setSeconds(0))
+		let l11 = new Date(new Date (new Date( new Date().setHours(9) ).setMinutes(20)).setSeconds(0))
+		let b12 = new Date(new Date (new Date( new Date().setHours(9) ).setMinutes(30)).setSeconds(0))
+		let l12 = new Date(new Date (new Date( new Date().setHours(10) ).setMinutes(50)).setSeconds(0))
+		let b13 = new Date(new Date (new Date( new Date().setHours(11) ).setMinutes(10)).setSeconds(0))
+		let l13 = new Date(new Date (new Date( new Date().setHours(12) ).setMinutes(30)).setSeconds(0))
+		let b14 = new Date(new Date (new Date( new Date().setHours(12) ).setMinutes(40)).setSeconds(0))
+		let l14 = new Date(new Date (new Date( new Date().setHours(14) ).setMinutes(0)).setSeconds(0))
+
+		let b21 = new Date(new Date (new Date( new Date().setHours(12) ).setMinutes(40)).setSeconds(0))
+		let l21 = new Date(new Date (new Date( new Date().setHours(14) ).setMinutes(0)).setSeconds(0))
+		let b22 = new Date(new Date (new Date( new Date().setHours(14) ).setMinutes(10)).setSeconds(0))
+		let l22 = new Date(new Date (new Date( new Date().setHours(15) ).setMinutes(30)).setSeconds(0))
+		let b23 = new Date(new Date (new Date( new Date().setHours(15) ).setMinutes(45)).setSeconds(0))
+		let l23 = new Date(new Date (new Date( new Date().setHours(17) ).setMinutes(5)).setSeconds(0))
+		let b24 = new Date(new Date (new Date( new Date().setHours(17) ).setMinutes(15)).setSeconds(0))
+		let l24 = new Date(new Date (new Date( new Date().setHours(18) ).setMinutes(35)).setSeconds(0))
+		var pars = [l24,b24,l23,b23,l22,b22,l21,b21,l14,b14,l13,b13,l12,b12,l11,b11]
+		pars.forEach((element) => {
+			let dd = element-d
+			//console.log(dd, dd2)
+			var daysDifference = Math.floor(dd/1000/60/60/24);
+			dd -= daysDifference*1000*60*60*24
+			var hoursDifference = Math.floor(dd/1000/60/60);
+			dd -= hoursDifference*1000*60*60
+			var minutesDifference = Math.floor(dd/1000/60);
+			dd -= minutesDifference*1000*60
+			var secondsDifference = Math.floor(dd/1000);
+			if (hoursDifference < 12){
+				var timestr = ('0' + hoursDifference).slice(-2) + ":" + ('0' + minutesDifference).slice(-2) + ":" + ('0' + secondsDifference).slice(-2)
+				document.getElementById('clock').innerHTML = timestr
+				document.title = timestr
+			}
+		})
+	}
+</script>
+
+
+<div class="bg">
+	<p id="myspan" class="hiden">notdiff</p>
+</div>
+<div class="clock-box">
+	<p class="dopari">До начала/конца пары осталось</p>
+	<p id="clock"></p>
+</div>
+<div class="container-btn">
+	<button id="btn-skin" onclick="changeBG()">🖌️ Фон</button>
+	<button id="btn-group" onclick="showChangeGroup()">👤 Группа</button>
+</div>
+<div class="popup">
+	<div id="blackerer"></div>
+	<div id="popup-title">
+		<button id="btn-popup-close" onclick="hideChangeGroup()">X</button>
+	</div>
+	<p id="group-selector-title">Группа: 
+        <select id="group-selector">
+			<option value="null">null</option>
+            <option value="0">П-11 (каб.25)</option>
+        </select>
+	</p>
+	<div id="shedule">
+
+	</div>
+</div>
+</body>
