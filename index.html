@@ -146,8 +146,16 @@ body {
 		]
 	]
 	
-
+	window.onresize = function(){
+			if( window.innerHeight == screen.height) {
+    			document.getElementsByClassName("container-btn")[0].style.display = 'none';
+			}
+			else {
+				document.getElementsByClassName("container-btn")[0].style.display = 'grid';
+			}
+		};
 	window.onload = function() {
+		
 		// Функция смена группы
 		var gs = document.getElementById('group-selector')
 		gs.onchange = function() {
