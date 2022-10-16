@@ -25,6 +25,7 @@ body {
 	padding:20px;
 	border-radius:40px;
 	border: 2px solid white;
+	backdrop-filter:blur(10px);
 }
 #clock {
 	font-size:9vw;
@@ -68,6 +69,7 @@ body {
 	z-index: 999;
 	display: none;
 	border: 2px solid white;
+	backdrop-filter:blur(10px);
 }
 
 #popup-title {
@@ -269,14 +271,17 @@ body {
 <div class="bg">
 	<p id="myspan" class="hiden">notdiff</p>
 </div>
+
 <div class="clock-box">
 	<p class="dopari">До начала/конца пары осталось</p>
 	<p id="clock"></p>
 </div>
+
 <div class="container-btn">
 	<button id="btn-skin" onclick="changeBG()">🖌️ Фон</button>
 	<button id="btn-group" onclick="showChangeGroup()">👤 Группа</button>
 </div>
+
 <div class="popup">
 	<div id="blackerer"></div>
 	<div id="popup-title">
