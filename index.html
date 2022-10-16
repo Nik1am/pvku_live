@@ -78,6 +78,7 @@ body {
 #shedule {
 	font-size:2vw;
 	color: #fff;
+	line-height: 0.5em;
 }
 #group-selector-title {
 	font-size:2vw;
@@ -123,7 +124,7 @@ body {
 	// [день[группа[массив расписания]]]
 	var shedule = [
 		[
-			["Биология","Русская литература","Математика","Иностранный язык"]
+			["я","заебался","это","писать"]
 		],
 		[
 			["Биология","Русская литература","Математика","Иностранный язык"]
@@ -136,11 +137,18 @@ body {
 		],
 		[
 			["Биология","Русская литература","Математика","Иностранный язык"]
+		],
+		[
+			["Биология","Русская литература","Математика","Иностранный язык"]
+		],
+		[
+			["СУББОТА"]
 		]
 	]
 	
 
 	window.onload = function() {
+		// Функция смена группы
 		var gs = document.getElementById('group-selector')
 		gs.onchange = function() {
 			storage.setItem('group_id',gs.value);
@@ -169,7 +177,13 @@ body {
 	// Функция написания расписания по id группы
 	function writeSchedule(group_id) {
 		var weekday = new Date().getDay()
-		document.getElementById('shedule').innerHTML = shedule[weekday-1][group_id];
+		
+		var temp = "";
+		for (let i = 0; i < shedule[weekday][group_id].length; i++) {
+  			temp += '<p>'+shedule[weekday][group_id][i]+'</p>';
+		}  
+		document.getElementById('shedule').innerHTML = temp;
+		temp = ""
 	}
 
 	// Функция смены фона
