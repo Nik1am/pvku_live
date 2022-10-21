@@ -9,13 +9,16 @@
 	var shedule = csv2json
 	//Скрытие кнопок при переходе в полноэкранный режим
 	window.onresize = function(){
+		hof = document.getElementsByClassName("hide-on-fullscreen")
 			if( window.innerHeight == screen.height) {
-    			document.getElementsByClassName("container-btn")[0].style.display = 'none';
-				//document.getElementsByClassName('popup')[0].style.display = 'none';
+				for (i=0; hof.length; i++) {
+    				hof[i].style.display = 'none';
+				}
 			}
 			else {
-				document.getElementsByClassName("container-btn")[0].style.display = 'grid';
-				//document.getElementsByClassName('popup')[0].style.display = 'inline';
+				for (i=0; hof.length; i++) {
+    				hof[i].style.display = 'grid';
+				}
 			}
 		};
 	
@@ -161,7 +164,7 @@
 	<p class="dopari">До начала/конца пары осталось</p>
 	<p id="clock">...</p>
 </div>
-<div class="container-btn">
+<div class="container-btn hide-on-fullscreen">
 	<button id="btn-skin" onclick="changeBG()">🖌️ Фон</button>
 	<button id="btn-group" onclick="showChangeGroup()">👤 Группа</button>
 </div>
@@ -174,7 +177,7 @@
 
 	</div>
 </div>
-<div id="footer">
+<div id="footer" class="hide-on-fullscreen">
 	Размытие<input id="blur-slider" type="range" min="0" max="50" value="5">
 </div>
 </body>
