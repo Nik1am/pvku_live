@@ -124,11 +124,18 @@ body {
 	var storage = window.localStorage;
 	// [день[группа[массив расписания]]]
 	var shedule = csv2json
+	//Скрытие кнопок при переходе в полноэкранный режим
+	window.onresize = function(){
+			if( window.innerHeight == screen.height) {
+    			document.getElementsByClassName("container-btn")[0].style.display = 'none';
+			}
+			else {
+				document.getElementsByClassName("container-btn")[0].style.display = 'grid';
+			}
+		};
 	
-
 	window.onload = function() {
 		// Функция смена группы
-		
 		var gs = document.getElementById('group-selector')
 
 		for (var i = 0; i<shedule.length; i++){
@@ -137,6 +144,7 @@ body {
     		opt.innerHTML = shedule[i][0];
     		gs.appendChild(opt);
 		}
+
 		gs.onchange = function() {
 			storage.setItem('group_id',gs.value);
 			console.log(gs.value)
