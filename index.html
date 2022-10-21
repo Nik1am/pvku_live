@@ -128,9 +128,11 @@ body {
 	window.onresize = function(){
 			if( window.innerHeight == screen.height) {
     			document.getElementsByClassName("container-btn")[0].style.display = 'none';
+				document.getElementsByClassName('popup')[0].style.display = 'none';
 			}
 			else {
 				document.getElementsByClassName("container-btn")[0].style.display = 'grid';
+				document.getElementsByClassName('popup')[0].style.display = 'inline';
 			}
 		};
 	
