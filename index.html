@@ -197,7 +197,7 @@ body {
 	//Функции показа/скрытия окна смены группы 
 	function showChangeGroup() {
 		let popup = document.getElementsByClassName('popup')[0]
-		if (popup.style.display == 'inline') {
+		if (popup.style.display != 'none') {
 			popup.style.display = 'none'
 		}
 		else {
