@@ -1,125 +1,8 @@
 <head>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
-body {
-	background-color:#000;
-	margin:-10;
-	overflow: hidden;
-	font-family: 'Ubuntu', sans-serif;
-}
-.bg {
-	margin:0;
-	height:100%;
-	background: url(https://i.pinimg.com/736x/db/86/4f/db864f597a08dc61666c9cee0b711972.jpg);
-	background-size: cover;
-	background-repeat: no-repeat;
-	filter:blur(5px);
-}
-.clock-box {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 50%;
-	background-color: rgba(0,0,0,0.5);
-	padding:20px;
-	border-radius:40px;
-	border: 2px solid white;
-}
-#clock {
-	font-size:9vw;
-	text-align: center;
-	color: #fff;
-	line-height: 2px;
-}
-.hiden {
-	font-size:1px;
-	text-align: center;
-	color:rgba(255, 255, 255, 0);
-}
-.dopari {
-	position: absolute;
-	font-size:2vw;
-	text-align: center;
-	color: #fff;
-	line-height: 2px;
-	left: 21%;
-	top: 15%;
-}
-.container-btn {
-	position: absolute;
-	top:0px;
-	right:0px;
-	width:20%;
-	height: 5em;
-	z-index: 99;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-}
-.popup {
-	position: absolute;
-	top: 50%;
-	left: 88%;
-	transform: translate(-50%, -50%);
-	width: 15%;
-	background-color: rgba(0,0,0,0.5);
-	padding:20px;
-	border-radius:40px;
-	z-index: 999;
-	display: inline;
-	border: 2px solid white;
-}
-
-#popup-title {
-	font-size:2vw;
-	color: #fff;
-	line-height: 2px;
-}
-#shedule {
-	font-size:1.5vw;
-	color: #fff;
-	line-height: 0.5em;
-}
-#group-selector-title {
-	font-size:2vw;
-	text-align: center;
-	color: #fff;
-	line-height: 2px;
-}
-#btn-popup-close {
-	background-color: rgba(128, 128, 128, 0.5);
-	border: none;
-	border-radius:20px;
-	color: #fff;
-	font-weight: bold;
-	cursor: pointer;
-	position: absolute;
-	top: 5px;
-	right: 5px;
-	width: 2vw;
-	height: 2vw;
-	border: 2px solid white;
-}
-#btn-skin , #btn-group {
-	margin: 5%;
-	background-color: rgba(0,0,0,0.5);
-	border: none;
-	border-radius:20px;
-	color: #fff;
-	font-weight: bold;
-	cursor: pointer;
-	transition-duration: 0.3s;
-	border: 2px solid white;
-}
-#btn-skin:hover , #btn-group:hover {
-	background-color: rgba(128, 128, 128, 0.5);
-	transition-duration: 0.3s;
-}
-</style>
-<script type="text/javascript" src="shedule.js"></script> 
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
-
 <body>
+<script type="text/javascript" src="shedule.js"></script> 
 <script>
 	var storage = window.localStorage;
 	// [день[группа[массив расписания]]]
@@ -137,6 +20,12 @@ body {
 		};
 	
 	window.onload = function() {
+		// Функция смены степени размытия фона
+		var bs = document.getElementById('blur-slider')
+		bs.oninput = function() {
+			document.getElementsByClassName('bg')[0].style.filter = `blur(${bs.value}px)`;
+			storage.setItem('blur_strength',bs.value);
+		}
 		// Функция смена группы
 		var gs = document.getElementById('group-selector')
 
@@ -169,6 +58,12 @@ body {
 			storage.setItem('group_id',0);
 		}
 
+		// Проверка заполнена ли ячейка с значением размытия фона, если нет - то ставит 5 (px)
+		if(storage.getItem('blur_strength') != null){
+			document.getElementsByClassName('bg')[0].style.filter = `blur(${storage.getItem('blur_strength')}px)`
+		} else {
+			storage.setItem('blur_strength',5);
+		}
 		// Запуск часов
 		var x = setInterval(update, 1000)
 	}
@@ -264,7 +159,7 @@ body {
 </div>
 <div class="clock-box">
 	<p class="dopari">До начала/конца пары осталось</p>
-	<p id="clock"></p>
+	<p id="clock">...</p>
 </div>
 <div class="container-btn">
 	<button id="btn-skin" onclick="changeBG()">🖌️ Фон</button>
@@ -278,5 +173,8 @@ body {
 	<div id="shedule">
 
 	</div>
+</div>
+<div id="footer">
+	Размытие<input id="blur-slider" type="range" min="0" max="50" value="5">
 </div>
 </body>
