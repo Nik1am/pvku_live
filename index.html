@@ -25,7 +25,6 @@ body {
 	padding:20px;
 	border-radius:40px;
 	border: 2px solid white;
-	backdrop-filter:blur(10px);
 }
 #clock {
 	font-size:9vw;
@@ -55,21 +54,20 @@ body {
 	height: 5em;
 	z-index: 99;
 	display: grid;
-    grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 1fr;
 }
 .popup {
 	position: absolute;
 	top: 50%;
-	left: 50%;
+	left: 88%;
 	transform: translate(-50%, -50%);
-	width: 60%;
+	width: 15%;
 	background-color: rgba(0,0,0,0.5);
 	padding:20px;
 	border-radius:40px;
 	z-index: 999;
-	display: none;
+	display: inline;
 	border: 2px solid white;
-	backdrop-filter:blur(10px);
 }
 
 #popup-title {
@@ -96,8 +94,8 @@ body {
 	font-weight: bold;
 	cursor: pointer;
 	position: absolute;
-    top: 5px;
-    right: 5px;
+	top: 5px;
+	right: 5px;
 	width: 2vw;
 	height: 2vw;
 	border: 2px solid white;
@@ -118,50 +116,30 @@ body {
 	transition-duration: 0.3s;
 }
 </style>
+<script type="text/javascript" src="shedule.js"></script> 
 </head>
 
 <body>
 <script>
 	var storage = window.localStorage;
 	// [день[группа[массив расписания]]]
-	var shedule = [
-		[
-			["я","заебался","это","писать"]
-		],
-		[
-			["Биология","Русская литература","Математика","Иностранный язык"]
-		],
-		[
-			["Биология","Русская литература","Математика","Иностранный язык"]
-		],
-		[
-			["Биология","Русская литература","Математика","Иностранный язык"]
-		],
-		[
-			["Биология","Русская литература","Математика","Иностранный язык"]
-		],
-		[
-			["Биология","Русская литература","Математика","Иностранный язык"]
-		],
-		[
-			["СУББОТА"]
-		]
-	]
+	var shedule = csv2json
 	
-	window.onresize = function(){
-			if( window.innerHeight == screen.height) {
-    			document.getElementsByClassName("container-btn")[0].style.display = 'none';
-			}
-			else {
-				document.getElementsByClassName("container-btn")[0].style.display = 'grid';
-			}
-		};
+
 	window.onload = function() {
-		
 		// Функция смена группы
+		
 		var gs = document.getElementById('group-selector')
+
+		for (var i = 0; i<shedule.length; i++){
+    		var opt = document.createElement('option');
+    		opt.value = i;
+    		opt.innerHTML = shedule[i][0];
+    		gs.appendChild(opt);
+		}
 		gs.onchange = function() {
 			storage.setItem('group_id',gs.value);
+			console.log(gs.value)
 			writeSchedule(gs.value)
 		};
 		
@@ -175,6 +153,7 @@ body {
 
 		// Проверка выбрана ли группа, если нет - то выставляет id 0
 		if(storage.getItem('group_id') != null){
+			gs.selectedIndex = storage.getItem('group_id');
 			writeSchedule(storage.getItem('group_id'));
 		} else {
 			storage.setItem('group_id',0);
@@ -189,8 +168,8 @@ body {
 		var weekday = new Date().getDay()
 		
 		var temp = "";
-		for (let i = 0; i < shedule[weekday][group_id].length; i++) {
-  			temp += '<p>'+shedule[weekday][group_id][i]+'</p>';
+		for (let i = 0; i < shedule[group_id][weekday].split(";").length; i++) {
+			  temp += '<p>'+shedule[group_id][weekday].split(";")[i]+'</p>';
 		}  
 		document.getElementById('shedule').innerHTML = temp;
 		temp = ""
@@ -207,12 +186,14 @@ body {
 
 	//Функции показа/скрытия окна смены группы 
 	function showChangeGroup() {
-		document.getElementsByClassName('popup')[0].style.display = 'inline';
+		let popup = document.getElementsByClassName('popup')[0]
+		if (popup.style.display == 'inline') {
+			popup.style.display = 'none'
+		}
+		else {
+			popup.style.display = 'inline'
+		}
 	}
-	function hideChangeGroup() {
-		document.getElementsByClassName('popup')[0].style.display = 'none';
-	}
-
 	// Основная функция часов, в начале из-за не стабильного API происходит получение отклонения времени несколько раз(нужно для точного отображения времени)
 	function update() {
 		if (document.getElementById("myspan").childNodes[0].textContent == "notdiff"){
@@ -271,27 +252,18 @@ body {
 <div class="bg">
 	<p id="myspan" class="hiden">notdiff</p>
 </div>
-
 <div class="clock-box">
 	<p class="dopari">До начала/конца пары осталось</p>
 	<p id="clock"></p>
 </div>
-
 <div class="container-btn">
 	<button id="btn-skin" onclick="changeBG()">🖌️ Фон</button>
 	<button id="btn-group" onclick="showChangeGroup()">👤 Группа</button>
 </div>
-
 <div class="popup">
-	<div id="blackerer"></div>
-	<div id="popup-title">
-		<button id="btn-popup-close" onclick="hideChangeGroup()">X</button>
-	</div>
 	<p id="group-selector-title">Группа: 
-        <select id="group-selector">
-			<option value="null">null</option>
-            <option value="0">П-11 (каб.25)</option>
-        </select>
+		<select id="group-selector">
+		</select>
 	</p>
 	<div id="shedule">
 
