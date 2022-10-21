@@ -83,7 +83,9 @@ body {
 	font-size:2vw;
 	text-align: center;
 	color: #fff;
-	line-height: 2px;
+}
+#group-selector {
+	vertical-align: middle;
 }
 #btn-skin , #btn-group {
 	background-color: rgba(0,0,0,0.5);
