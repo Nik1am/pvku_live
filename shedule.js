@@ -29,3 +29,7 @@ var csv2json = new Array();
 for (let i=0; i<groups.length-1; i++) {
     csv2json[i] = groups[i+1].split(',')
 }
+
+function egg() {
+    document.getElementsByClassName('dopari')[0].innerHTML = 'CheemsDFI'
+}

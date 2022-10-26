@@ -153,7 +153,12 @@
 			if (hoursDifference < 12){
 				var timestr = ('0' + hoursDifference).slice(-2) + ":" + ('0' + minutesDifference).slice(-2) + ":" + ('0' + secondsDifference).slice(-2)
 				document.getElementById('clock').innerHTML = timestr
-				document.title = timestr
+				if ( (('0' + hoursDifference).slice(-2)<1) && (('0' + minutesDifference).slice(-2) <5) ) {
+					document.title = timestr+" [!]"
+				}
+				else {
+					document.title = timestr
+				}
 			}
 		})
 	}
