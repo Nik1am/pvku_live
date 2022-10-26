@@ -149,6 +149,7 @@
 				diff = new Date() - Date.parse(data.datetime.slice(0,-6))
 				console.log("Апи говно "+diff)
 				document.getElementById("myspan").innerHTML = diff
+				document.body.style.cursor = "unset" 
 			}
 		})}
 		let d = new Date() - diff;

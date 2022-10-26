@@ -4,6 +4,7 @@ body {
 	margin:-10;
 	overflow: hidden;
 	font-family: 'Ubuntu', sans-serif;
+	cursor: wait;
 }
 .bg {
 	margin:0;
