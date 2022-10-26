@@ -1,4 +1,5 @@
 <head>
+<title>pvku.tk | Загрузка...</title>
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
@@ -7,6 +8,7 @@
 	var storage = window.localStorage;
 	// [день[группа[массив расписания]]]
 	var shedule = csv2json
+	var title_str = ""
 	//Скрытие кнопок при переходе в полноэкранный режим
 	window.onresize = function(){
 		hof = document.getElementsByClassName("hide-on-fullscreen")
@@ -73,7 +75,9 @@
 	// Функция написания расписания по id группы
 	function writeSchedule(group_id) {
 		var weekday = new Date().getDay()
-		
+		if (weekday == 0) {
+			weekday = 7;
+		}
 		var temp = "";
 		for (let i = 0; i < shedule[group_id][weekday].split(";").length; i++) {
 			  temp += '<p>'+shedule[group_id][weekday].split(";")[i]+'</p>';
@@ -154,10 +158,10 @@
 				var timestr = ('0' + hoursDifference).slice(-2) + ":" + ('0' + minutesDifference).slice(-2) + ":" + ('0' + secondsDifference).slice(-2)
 				document.getElementById('clock').innerHTML = timestr
 				if ( (('0' + hoursDifference).slice(-2)<1) && (('0' + minutesDifference).slice(-2) <5) ) {
-					document.title = timestr+" [!]"
+					document.title = title_str+timestr+" [!]"
 				}
 				else {
-					document.title = timestr
+					document.title = title_str+timestr
 				}
 			}
 		})
