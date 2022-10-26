@@ -12,7 +12,7 @@
 	//Скрытие кнопок при переходе в полноэкранный режим
 	window.onresize = function(){
 		hof = document.getElementsByClassName("hide-on-fullscreen")
-			if( window.innerHeight == screen.height) {
+			if( isFullScreen()) {
 				for (i=0; i<hof.length; i++) {
     				hof[i].style.display = 'none';
 				}
@@ -23,7 +23,31 @@
 				}
 			}
 		};
-	
+	// Реакция на двойное нажатие по экрану
+	document.addEventListener('dblclick', (e) => {
+		toggleFullScreen()
+	});
+	// Функция входа/выхода из полноэкранного режима (украл из интернета)
+	function toggleFullScreen() {
+       if (!document.fullscreenElement &&    // alternative standard method
+        !document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
+         if (document.documentElement.requestFullscreen) {
+           document.documentElement.requestFullscreen();
+         } else if (document.documentElement.mozRequestFullScreen) {
+           document.documentElement.mozRequestFullScreen();
+         } else if (document.documentElement.webkitRequestFullscreen) {
+           document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+         }
+       } else {
+          if (document.cancelFullScreen) {
+             document.cancelFullScreen();
+          } else if (document.mozCancelFullScreen) {
+             document.mozCancelFullScreen();
+          } else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen();
+          }
+       }
+     }
 	window.onload = function() {
 		// Функция смены степени размытия фона
 		var bs = document.getElementById('blur-slider')
@@ -71,7 +95,10 @@
 		// Запуск часов
 		var x = setInterval(update, 1000)
 	}
-
+	// Функция проверки открыт ли сайт во весь экран
+	function isFullScreen() {
+		return window.innerHeight == screen.height
+	}
 	// Функция написания расписания по id группы
 	function writeSchedule(group_id) {
 		var weekday = new Date().getDay()
