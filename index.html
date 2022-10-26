@@ -172,7 +172,7 @@
 		let b24 = t2u("17:15:00")
 		let l24 = t2u("18:35:00")
 		var pars = [l24,b24,l23,b23,l22,b22,l21,b21,l14,b14,l13,b13,l12,b12,l11,b11]
-		pars.forEach((element) => {
+		pars.forEach((element, index) => {
 			let dd = element-d
 			//console.log(dd)
 			var daysDifference = Math.floor(dd/1000/60/60/24);
@@ -185,6 +185,7 @@
 			if (hoursDifference < 12){
 				var timestr = ('0' + hoursDifference).slice(-2) + ":" + ('0' + minutesDifference).slice(-2) + ":" + ('0' + secondsDifference).slice(-2)
 				document.getElementById('clock').innerHTML = timestr
+				
 				if ( (('0' + hoursDifference).slice(-2)<1) && (('0' + minutesDifference).slice(-2) <5) ) {
 					document.title = title_str+timestr+" [!]"
 				}
