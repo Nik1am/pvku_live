@@ -115,34 +115,34 @@
 				console.log(diff)
 			}
 			catch {
-				console.log("Апи говно")
-				diff = new Date() - new Date(data.unixtime*1000)
+				diff = new Date() - Date.parse(data.datetime.slice(0,-6))
+				console.log("Апи говно "+diff)
 				document.getElementById("myspan").innerHTML = diff
 			}
 		})}
 		let d = new Date() - diff;
 
-		let b11 = new Date(t2u("8:0:0"))
-		let l11 = new Date(t2u("9:20:0"))
-		let b12 = new Date(t2u("9:30:0"))
-		let l12 = new Date(t2u("10:50:0"))
-		let b13 = new Date(t2u("11:10:0"))
-		let l13 = new Date(t2u("12:30:0"))
-		let b14 = new Date(t2u("12:40:0"))
-		let l14 = new Date(t2u("14:0:0"))
+		let b11 = t2u("08:00:00")
+		let l11 = t2u("09:20:00")
+		let b12 = t2u("09:30:00")
+		let l12 = t2u("10:50:00")
+		let b13 = t2u("11:10:00")
+		let l13 = t2u("12:30:00")
+		let b14 = t2u("12:40:00")
+		let l14 = t2u("14:00:00")
 
-		let b21 = new Date(t2u("12:40:0"))
-		let l21 = new Date(t2u("14:0:0"))
-		let b22 = new Date(t2u("14:10:0"))
-		let l22 = new Date(t2u("15:30:0"))
-		let b23 = new Date(t2u("15:30:0"))
-		let l23 = new Date(t2u("17:5:0"))
-		let b24 = new Date(t2u("17:15:0"))
-		let l24 = new Date(t2u("18:35:0"))
+		let b21 = t2u("12:40:00")
+		let l21 = t2u("14:00:00")
+		let b22 = t2u("14:10:00")
+		let l22 = t2u("15:30:00")
+		let b23 = t2u("15:30:00")
+		let l23 = t2u("17:05:00")
+		let b24 = t2u("17:15:00")
+		let l24 = t2u("18:35:00")
 		var pars = [l24,b24,l23,b23,l22,b22,l21,b21,l14,b14,l13,b13,l12,b12,l11,b11]
 		pars.forEach((element) => {
 			let dd = element-d
-			//console.log(dd, dd2)
+			//console.log(dd)
 			var daysDifference = Math.floor(dd/1000/60/60/24);
 			dd -= daysDifference*1000*60*60*24
 			var hoursDifference = Math.floor(dd/1000/60/60);
