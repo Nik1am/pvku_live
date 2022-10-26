@@ -11,12 +11,12 @@
 	window.onresize = function(){
 		hof = document.getElementsByClassName("hide-on-fullscreen")
 			if( window.innerHeight == screen.height) {
-				for (i=0; hof.length; i++) {
+				for (i=0; i<hof.length; i++) {
     				hof[i].style.display = 'none';
 				}
 			}
 			else {
-				for (i=0; hof.length; i++) {
+				for (i=0; i<hof.length; i++) {
     				hof[i].style.display = 'grid';
 				}
 			}
@@ -41,7 +41,6 @@
 
 		gs.onchange = function() {
 			storage.setItem('group_id',gs.value);
-			console.log(gs.value)
 			writeSchedule(gs.value)
 		};
 		
@@ -91,7 +90,11 @@
 			storage.setItem('bgurl',url);
 		}
 	}
-
+	//Функция преобразования времени формата "ЧЧ:ММ:СС" в UNIX
+	function t2u(str) {
+		str_splitted = str.split(":")
+		return new Date().setHours(str_splitted[0], str_splitted[1], str_splitted[2])
+	}
 	//Функции показа/скрытия окна смены группы 
 	function showChangeGroup() {
 		let popup = document.getElementsByClassName('popup')[0]
@@ -119,23 +122,23 @@
 		})}
 		let d = new Date() - diff;
 
-		let b11 = new Date(new Date (new Date( new Date().setHours(8) ).setMinutes(0)).setSeconds(0))
-		let l11 = new Date(new Date (new Date( new Date().setHours(9) ).setMinutes(20)).setSeconds(0))
-		let b12 = new Date(new Date (new Date( new Date().setHours(9) ).setMinutes(30)).setSeconds(0))
-		let l12 = new Date(new Date (new Date( new Date().setHours(10) ).setMinutes(50)).setSeconds(0))
-		let b13 = new Date(new Date (new Date( new Date().setHours(11) ).setMinutes(10)).setSeconds(0))
-		let l13 = new Date(new Date (new Date( new Date().setHours(12) ).setMinutes(30)).setSeconds(0))
-		let b14 = new Date(new Date (new Date( new Date().setHours(12) ).setMinutes(40)).setSeconds(0))
-		let l14 = new Date(new Date (new Date( new Date().setHours(14) ).setMinutes(0)).setSeconds(0))
+		let b11 = new Date(t2u("8:0:0"))
+		let l11 = new Date(t2u("9:20:0"))
+		let b12 = new Date(t2u("9:30:0"))
+		let l12 = new Date(t2u("10:50:0"))
+		let b13 = new Date(t2u("11:10:0"))
+		let l13 = new Date(t2u("12:30:0"))
+		let b14 = new Date(t2u("12:40:0"))
+		let l14 = new Date(t2u("14:0:0"))
 
-		let b21 = new Date(new Date (new Date( new Date().setHours(12) ).setMinutes(40)).setSeconds(0))
-		let l21 = new Date(new Date (new Date( new Date().setHours(14) ).setMinutes(0)).setSeconds(0))
-		let b22 = new Date(new Date (new Date( new Date().setHours(14) ).setMinutes(10)).setSeconds(0))
-		let l22 = new Date(new Date (new Date( new Date().setHours(15) ).setMinutes(30)).setSeconds(0))
-		let b23 = new Date(new Date (new Date( new Date().setHours(15) ).setMinutes(45)).setSeconds(0))
-		let l23 = new Date(new Date (new Date( new Date().setHours(17) ).setMinutes(5)).setSeconds(0))
-		let b24 = new Date(new Date (new Date( new Date().setHours(17) ).setMinutes(15)).setSeconds(0))
-		let l24 = new Date(new Date (new Date( new Date().setHours(18) ).setMinutes(35)).setSeconds(0))
+		let b21 = new Date(t2u("12:40:0"))
+		let l21 = new Date(t2u("14:0:0"))
+		let b22 = new Date(t2u("14:10:0"))
+		let l22 = new Date(t2u("15:30:0"))
+		let b23 = new Date(t2u("15:30:0"))
+		let l23 = new Date(t2u("17:5:0"))
+		let b24 = new Date(t2u("17:15:0"))
+		let l24 = new Date(t2u("18:35:0"))
 		var pars = [l24,b24,l23,b23,l22,b22,l21,b21,l14,b14,l13,b13,l12,b12,l11,b11]
 		pars.forEach((element) => {
 			let dd = element-d
