@@ -106,11 +106,15 @@
 			weekday = 7;
 		}
 		var temp = "";
-		for (let i = 0; i < shedule[group_id][weekday].split(";").length; i++) {
-			  temp += '<p>'+shedule[group_id][weekday].split(";")[i]+'</p>';
-		}  
-		document.getElementById('shedule').innerHTML = temp;
-		temp = ""
+		for (let i = 0; i < 4; i++) {
+			para_name = shedule[group_id][weekday].split(";")[i]
+			if (para_name){
+				document.getElementsByClassName('lecture')[i].innerHTML = para_name
+			}
+			else {
+				document.getElementsByClassName('lecture')[i].innerHTML = ""
+			}
+		}
 	}
 
 	// Функция смены фона
@@ -136,6 +140,9 @@
 			popup.style.display = 'inline'
 		}
 	}
+	function div(val, by){
+    		return (val - val % by) / by;
+		}
 	// Основная функция часов, в начале из-за не стабильного API происходит получение отклонения времени несколько раз(нужно для точного отображения времени)
 	function update() {
 		if (document.getElementById("myspan").childNodes[0].textContent == "notdiff"){
@@ -153,7 +160,7 @@
 			}
 		})}
 		let d = new Date() - diff;
-
+		index2para_name = [1,1,2,2,3,3,4,4,1,1,2,2,3,3,4,4]
 		let b11 = t2u("08:00:00")
 		let l11 = t2u("09:20:00")
 		let b12 = t2u("09:30:00")
@@ -171,7 +178,13 @@
 		let l23 = t2u("17:05:00")
 		let b24 = t2u("17:15:00")
 		let l24 = t2u("18:35:00")
+		var weekday = new Date().getDay()
+		if (weekday == 0) {
+			weekday = 7;
+		}
+		
 		var pars = [l24,b24,l23,b23,l22,b22,l21,b21,l14,b14,l13,b13,l12,b12,l11,b11]
+		current_para = 0
 		pars.forEach((element, index) => {
 			let dd = element-d
 			//console.log(dd)
@@ -185,15 +198,14 @@
 			if (hoursDifference < 12){
 				var timestr = ('0' + hoursDifference).slice(-2) + ":" + ('0' + minutesDifference).slice(-2) + ":" + ('0' + secondsDifference).slice(-2)
 				document.getElementById('clock').innerHTML = timestr
-				
+				document.title = title_str+timestr+" | "+shedule[storage.getItem('group_id')][weekday].split(";")[index2para_name[index]]
+				current_para = index2para_name[index]
 				if ( (('0' + hoursDifference).slice(-2)<1) && (('0' + minutesDifference).slice(-2) <5) ) {
-					document.title = title_str+timestr+" [!]"
-				}
-				else {
-					document.title = title_str+timestr
+					1+1
 				}
 			}
 		})
+		document.getElementsByClassName('lecture')[current_para].innerHTML = shedule[storage.getItem('group_id')][weekday].split(";")[current_para] + " <"
 	}
 </script>
 
@@ -222,7 +234,10 @@
 		</select>
 	</div>
 	<div id="shedule">
-
+		<p class="lecture"></p>
+		<p class="lecture"></p>
+		<p class="lecture"></p>
+		<p class="lecture"></p>
 	</div>
 </div>
 </body>
