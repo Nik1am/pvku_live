@@ -14,12 +14,12 @@
 		hof = document.getElementsByClassName("hide-on-fullscreen")
 			if( isFullScreen()) {
 				for (i=0; i<hof.length; i++) {
-    				hof[i].style.display = 'none';
+    				hof[i].style.top = '-4em';
 				}
 			}
 			else {
 				for (i=0; i<hof.length; i++) {
-    				hof[i].style.display = 'grid';
+    				hof[i].style.top = '0';
 				}
 			}
 		};
