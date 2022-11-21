@@ -1,10 +1,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+@keyframes hide {
+	from {
+		scale: 100%;
+	}
+	to {
+		scale: 0%;
+	}
+}
 body {
 	background-color:#000;
 	margin:-10;
 	overflow: hidden;
 	font-family: 'Ubuntu', sans-serif;
 	cursor: wait;
+}
+#styler {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: rgba(0,0,0,0.5);
+	padding:20px;
+	border-radius:40px;
+	border: 2px solid white;
+	color: #fff;
+	font-size:2vw;
+	text-align: center;
+	min-width: 60vh;
+	min-height: 60vh;
+	scale: 0;
+	opacity: 0;
+	transition: 0.5s;
+	transform-origin: 0% 0%;
+}
+#bg-url {
+	vertical-align: middle;
+}
+#bg-preview {
+	min-width: 80%;
+	min-height: 80%;
+	max-width: 60vh;
+	max-height: 60vh;
 }
 .bg {
 	margin:0;
@@ -24,6 +60,8 @@ body {
 	padding:20px;
 	border-radius:40px;
 	border: 2px solid white;
+	transition: 0.5s;
+	transform-origin: 0% 0%;
 }
 #clock {
 	font-size:9vw;
@@ -69,6 +107,8 @@ body {
 	z-index: 999;
 	display: inline;
 	border: 2px solid white;
+	transition: 0.5s;
+	transform-origin: 0% 0%;
 }
 
 #popup-title {

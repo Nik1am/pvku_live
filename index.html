@@ -92,6 +92,34 @@
 		} else {
 			storage.setItem('blur_strength',5);
 		}
+		// Функционал смены фона v2
+		bgFile = document.getElementById("bg-file");
+		bgURL = document.getElementById("bg-url");
+		bgBtn = document.getElementById("bg-btn");
+		bgPreview = document.getElementById("bg-preview");
+		var tempImageData;
+		var reader = new FileReader();
+		bgFile.onchange = () => {
+        	reader.readAsDataURL(bgFile.files[0]); 
+        	reader.onload = () => {
+            	tempImageData = reader.result;
+        	}
+    	}
+		bgBtn.onclick = () => {
+			if(bgURL.value){
+				bgPreview.src = bgURL.value;
+				document.getElementsByClassName('bg')[0].style.backgroundImage = "url("+bgURL.value+")"; 
+				storage.setItem('bgurl',bgURL.value);
+			}
+			else if(bgFile.value){
+				bgPreview.src = tempImageData;
+				document.getElementsByClassName('bg')[0].style.backgroundImage = "url("+tempImageData+")"; 
+				storage.setItem('bgurl',tempImageData);
+			}
+			else{
+				alert("Для смены фона выберите хотя-бы 1 вариант")
+			}
+		}
 		// Запуск часов
 		var x = setInterval(update, 1000)
 	}
@@ -117,32 +145,72 @@
 		}
 	}
 
-	// Функция смены фона
-	function changeBG() {
+	// Функция смены фона [УСТАРЕЛА]
+	/*function changeBG() {
 		var url = prompt('Ссылка на файл фона',storage.getItem('bgurl'))
 		if(url != null){
 			document.getElementsByClassName('bg')[0].style.backgroundImage = "url("+url+")"; 
 			storage.setItem('bgurl',url);
 		}
-	}
+	}*/
 	//Функция преобразования времени формата "ЧЧ:ММ:СС" в UNIX
 	function t2u(str) {
 		str_splitted = str.split(":")
 		return new Date().setHours(str_splitted[0], str_splitted[1], str_splitted[2])
 	}
+	//Функция преобразования времени формата UNIX в "ЧЧ:ММ:СС"
+	function u2t(unix) {
+		unix -= 3*60*60*1000
+		return nTo0n(new Date(unix).getHours())+":"+nTo0n(new Date(unix).getMinutes())+":"+nTo0n(new Date(unix).getSeconds())
+	}
 	//Функции показа/скрытия окна смены группы 
 	function showChangeGroup() {
 		let popup = document.getElementsByClassName('popup')[0]
-		if (popup.style.display != 'none') {
-			popup.style.display = 'none'
+		if (popup.style.scale != '0') {
+			popup.style.scale  = '0'
+			popup.style.opacity  = '0'
 		}
 		else {
-			popup.style.display = 'inline'
+			popup.style.scale  = '1'
+			popup.style.opacity  = '1'
 		}
 	}
+	//Функции показа/скрытия часов
+	function clockToggle() {
+		let clock = document.getElementsByClassName("clock-box")[0]
+		if (clock.style.scale != '0') {
+			clock.style.scale  = '0'
+			clock.style.opacity  = '0'
+		}
+		else {
+			clock.style.scale  = '1'
+			clock.style.opacity  = '1'
+		}
+	}
+	//Функции показа/скрытия выбора фона
+	function changeBG() {
+		let styler = document.getElementById("styler")
+		if (styler.style.scale != '1') {
+			styler.style.scale  = '1'
+			styler.style.opacity  = '1'
+			clockToggle()
+		}
+		else {
+			styler.style.scale  = '0'
+			styler.style.opacity  = '0'
+			clockToggle()
+		}
+	}
+	//Целочисельное деление
 	function div(val, by){
     		return (val - val % by) / by;
 		}
+	//Функция преобразования чисел формата "n" в "0n"
+	function nTo0n(int){
+    	if (int > 9) {
+    		return int;
+  		} else return `0${int}`;
+	};
 	// Основная функция часов, в начале из-за не стабильного API происходит получение отклонения времени несколько раз(нужно для точного отображения времени)
 	function update() {
 		if (document.getElementById("myspan").childNodes[0].textContent == "notdiff"){
@@ -155,11 +223,13 @@
 			catch {
 				diff = new Date() - Date.parse(data.datetime.slice(0,-6))
 				console.log("Апи говно "+diff)
+				console.log("Текущая дата "+Date.parse(new Date())+new Date())
+				console.log("Алматы "+Date.parse(data.datetime.slice(0,-6))+data.datetime)
 				document.getElementById("myspan").innerHTML = diff
 				document.body.style.cursor = "unset" 
 			}
 		})}
-		let d = new Date() - diff;
+		let time_with_offset = new Date() - diff;
 		index2para_name = [1,1,2,2,3,3,4,4,1,1,2,2,3,3,4,4]
 		let b11 = t2u("08:00:00")
 		let l11 = t2u("09:20:00")
@@ -184,28 +254,17 @@
 		}
 		
 		var pars = [l24,b24,l23,b23,l22,b22,l21,b21,l14,b14,l13,b13,l12,b12,l11,b11]
-		current_para = 0
+		var times_to_pars = [];
+		var current_para = 0
 		pars.forEach((element, index) => {
-			let dd = element-d
-			//console.log(dd)
-			var daysDifference = Math.floor(dd/1000/60/60/24);
-			dd -= daysDifference*1000*60*60*24
-			var hoursDifference = Math.floor(dd/1000/60/60);
-			dd -= hoursDifference*1000*60*60
-			var minutesDifference = Math.floor(dd/1000/60);
-			dd -= minutesDifference*1000*60
-			var secondsDifference = Math.floor(dd/1000);
-			if (hoursDifference < 12){
-				var timestr = ('0' + hoursDifference).slice(-2) + ":" + ('0' + minutesDifference).slice(-2) + ":" + ('0' + secondsDifference).slice(-2)
-				document.getElementById('clock').innerHTML = timestr
-				document.title = title_str+timestr+" | "+shedule[storage.getItem('group_id')][weekday].split(";")[index2para_name[index]]
-				current_para = index2para_name[index]
-				if ( (('0' + hoursDifference).slice(-2)<1) && (('0' + minutesDifference).slice(-2) <5) ) {
-					1+1
-				}
-			}
+			let dd = element-time_with_offset
+			times_to_pars.push(dd)
+			document.title = u2t(dd)
 		})
-		document.getElementsByClassName('lecture')[current_para].innerHTML = shedule[storage.getItem('group_id')][weekday].split(";")[current_para] + " <"
+		// forEach end
+		document.getElementById('clock').innerHTML = u2t(Math.min(...times_to_pars))
+		times_to_pars = []
+		//document.getElementsByClassName('lecture')[current_para].innerHTML = shedule[storage.getItem('group_id')][weekday].split(";")[current_para] + " <"
 	}
 </script>
 
@@ -238,6 +297,21 @@
 		<p class="lecture"></p>
 		<p class="lecture"></p>
 		<p class="lecture"></p>
+	</div>
+</div>
+<div id="styler">
+	Выбор фона
+	<div id="bg-url-wrapper">
+		URL:<input id="bg-url">
+	</div>
+	<div id="bg-file-wrapper">
+		<input id="bg-file" type="file" accept="image/*">
+	</div>
+	<div id="bg-btn-wrapper">
+		<button id="bg-btn">Установить как фон</button>
+	</div>
+	<div id="bg-preview-wrapper">
+		<img id="bg-preview" src="https://cheems.ml/icon.png">
 	</div>
 </div>
 </body>
