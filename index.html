@@ -73,6 +73,7 @@
 		// Проверка заполнена ли ячейка с ссылкой на изображение фона, если нет - ставит стандартный
 		if(storage.getItem('bgurl') != null){
 			document.getElementsByClassName('bg')[0].style.backgroundImage = "url("+storage.getItem('bgurl')+")";
+			document.getElementById("bg-preview").src = storage.getItem('bgurl');
 		} else {
 			storage.setItem('bgurl',"https://i.pinimg.com/736x/db/86/4f/db864f597a08dc61666c9cee0b711972.jpg");
 			document.getElementsByClassName('bg')[0].style.backgroundImage = "url("+storage.getItem('bgurl')+")";
