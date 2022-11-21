@@ -11,7 +11,7 @@ body {
 	background-color:#000;
 	margin:-10;
 	overflow: hidden;
-	font-family: 'Ubuntu', sans-serif;
+	font-family:'Segoe UI', Tahoma, Verdana, sans-serif;
 	cursor: wait;
 }
 #styler {
@@ -36,11 +36,16 @@ body {
 #bg-url {
 	vertical-align: middle;
 }
+#bg-file {
+	margin: 10px;
+}
 #bg-preview {
+	margin-top: 10;
 	min-width: 80%;
 	min-height: 80%;
 	max-width: min(60vh,60vw);
 	max-height: min(60vh,60vw);
+	border-radius:20px;
 }
 .bg {
 	margin:0;
@@ -143,6 +148,8 @@ body {
 	transition-duration: 0.3s;
 }
 #footer {
+	padding-left: 20px;
+	padding-right: 20px;
 	text-align: center;
 	display:grid;
 	background-color: rgba(0,0,0,0.5);
@@ -153,6 +160,7 @@ body {
 }
 #blur-slider {
 	cursor: pointer;
+	width: auto;
 }
 .hide-on-fullscreen {
 	width: 100%;
