@@ -33,18 +33,57 @@ body {
 	transition: 0.5s;
 	transform-origin: 0% 0%;
 }
+#bg-url-wrapper {
+	margin: auto;
+	padding: 10px;
+	background-color: rgba(0,0,0,0.5);
+	border-radius:20px;
+	color: #fff;
+	font-weight: bold;
+	cursor: text;
+	border: 2px solid white;
+	max-width: fit-content;
+}
 #bg-url {
-	vertical-align: middle;
+	vertical-align:middle;
+	background-color: rgba(0,0,0,0.5);
+	border: none;
+	border-bottom: 2px solid #888;
+	color: #fff;
+	font-weight: bold;
+	transition: 0.5s;
+}
+#bg-url:focus {
+	border: none;
+	border-bottom: 2px double white;
+	outline: none;
+	transition: 0.5s;
 }
 #bg-file {
 	margin: 10px;
+	padding: 10px;
+	background-color: rgba(0,0,0,0.5);
+	border-radius:20px;
+	color: #fff;
+	font-weight: bold;
+	cursor: pointer;
+	border: 2px solid white;
+}
+#bg-btn {
+	padding: 10px;
+	background-color: rgba(0,0,0,0.5);
+	border-radius:20px;
+	color: #fff;
+	font-weight: bold;
+	cursor: pointer;
+	border: 2px solid white;
 }
 #bg-preview {
 	margin-top: 10;
-	min-width: 80%;
+	min-width: 40%;
 	min-height: 80%;
 	max-width: min(60vh,60vw);
-	max-height: min(60vh,60vw);
+	max-height: min(50vh,50vw);
 	border-radius:20px;
 }
 .bg {

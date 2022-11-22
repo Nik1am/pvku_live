@@ -104,8 +104,12 @@
         	reader.readAsDataURL(bgFile.files[0]); 
         	reader.onload = () => {
             	tempImageData = reader.result;
+				bgPreview.src = tempImageData;
         	}
     	}
+		bgURL.onblur = () => {
+			bgPreview.src = bgURL.value;
+		}
 		bgBtn.onclick = () => {
 			if(bgURL.value){
 				bgPreview.src = bgURL.value;
