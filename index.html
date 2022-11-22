@@ -263,11 +263,16 @@
 		var current_para = 0
 		pars.forEach((element, index) => {
 			let dd = element-time_with_offset
-			times_to_pars.push(dd)
+			if(dd > 0){
+				times_to_pars.push(dd)
+			}
+			console.log(`${dd} ${u2t(dd)}`)
 			document.title = u2t(dd)
 		})
 		// forEach end
-		document.getElementById('clock').innerHTML = u2t(Math.min(...times_to_pars))
+		timestr = u2t(Math.min(...times_to_pars))
+		document.getElementById('clock').innerHTML = timestr
+		document.title = timestr
 		times_to_pars = []
 		//document.getElementsByClassName('lecture')[current_para].innerHTML = shedule[storage.getItem('group_id')][weekday].split(";")[current_para] + " <"
 	}
