@@ -238,7 +238,7 @@
 			}
 		})}
 		let time_with_offset = new Date() - diff;
-		index2para_name = [1,1,2,2,3,3,4,4,1,1,2,2,3,3,4,4]
+		index2para_type = ["Пара","Перерыв","Пара","Перерыв","Пара","Перерыв","Пара","Перерыв","Пара","Перерыв","Пара","Перерыв","Пара","Перерыв","Пара","Перерыв"]
 		let b11 = t2u("08:00:00")
 		let l11 = t2u("09:20:00")
 		let b12 = t2u("09:30:00")
@@ -263,15 +263,18 @@
 		
 		var pars = [l24,b24,l23,b23,l22,b22,l21,b21,l14,b14,l13,b13,l12,b12,l11,b11]
 		var times_to_pars = [];
+		var times_to_pars_type = [];
 		var times_to_pars_unsorted = [];
 		var current_para = 0
 		pars.forEach((element, index) => {
+			// console.log(`Para ${element} | Index ${index} | Type ${index2para_type[index]}`)
 			let dd = element-time_with_offset
 			if(dd > 0){
 				times_to_pars.push(dd)
+				times_to_pars_type.push(index)
 			}
 			times_to_pars_unsorted.push(dd)
-			console.log(`${dd} ${u2t(dd)}`)
+			// console.log(`${dd} ${u2t(dd)}`)
 			document.title = u2t(dd)
 		})
 		timestr = "e"
@@ -282,10 +285,13 @@
 		else {
 			timestr = u2t(Math.min(...times_to_pars_unsorted))
 		}
+		console.log(index2para_type[Math.min(...times_to_pars_type)])
 		// forEach end
 		document.getElementById('clock').innerHTML = timestr
 		document.title = timestr
-		times_to_pars = []
+		times_to_pars = [];
+		times_to_pars_unsorted = [];
+		times_to_pars_type = [];
 		//document.getElementsByClassName('lecture')[current_para].innerHTML = shedule[storage.getItem('group_id')][weekday].split(";")[current_para] + " <"
 	}
 </script>
