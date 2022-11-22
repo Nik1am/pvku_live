@@ -108,7 +108,9 @@
         	}
     	}
 		bgURL.onblur = () => {
-			bgPreview.src = bgURL.value;
+			if(bgURL.value){
+				bgPreview.src = bgURL.value;
+			}
 		}
 		bgBtn.onclick = () => {
 			if(bgURL.value){
@@ -219,6 +221,7 @@
 	// Основная функция часов, в начале из-за не стабильного API происходит получение отклонения времени несколько раз(нужно для точного отображения времени)
 	function update() {
 		if (document.getElementById("myspan").childNodes[0].textContent == "notdiff"){
+			console.log("Fetching...")
 			fetch("https://worldtimeapi.org/api/timezone/Asia/Almaty")
 				.then(response => response.json())
 				.then(data => {
@@ -260,17 +263,26 @@
 		
 		var pars = [l24,b24,l23,b23,l22,b22,l21,b21,l14,b14,l13,b13,l12,b12,l11,b11]
 		var times_to_pars = [];
+		var times_to_pars_unsorted = [];
 		var current_para = 0
 		pars.forEach((element, index) => {
 			let dd = element-time_with_offset
 			if(dd > 0){
 				times_to_pars.push(dd)
 			}
+			times_to_pars_unsorted.push(dd)
 			console.log(`${dd} ${u2t(dd)}`)
 			document.title = u2t(dd)
 		})
+		timestr = "e"
+		if(times_to_pars.length != 0){
+			timestr = u2t(Math.min(...times_to_pars))
+			console.log(times_to_pars)
+		}
+		else {
+			timestr = u2t(Math.min(...times_to_pars_unsorted))
+		}
 		// forEach end
-		timestr = u2t(Math.min(...times_to_pars))
 		document.getElementById('clock').innerHTML = timestr
 		document.title = timestr
 		times_to_pars = []
