@@ -215,6 +215,7 @@
 	function div(val, by){
     		return (val - val % by) / by;
 		}
+    function isOdd(num) { return num % 2;}
 	//Функция преобразования чисел формата "n" в "0n"
 	function nTo0n(int){
     	if (int > 9) {
@@ -241,7 +242,6 @@
 			}
 		})}
 		let time_with_offset = new Date() - diff;
-		index2para_type = ["Пара","Перерыв","Пара","Перерыв","Пара","Перерыв","Пара","Перерыв","Пара","Перерыв","Пара","Перерыв","Пара","Перерыв","Пара","Перерыв"]
 		let b11 = t2u("08:00:00")
 		let l11 = t2u("09:20:00")
 		let b12 = t2u("09:30:00")
@@ -288,7 +288,13 @@
 		else {
 			timestr = u2t(Math.min(...times_to_pars_unsorted))
 		}
-		console.log(index2para_type[Math.min(...times_to_pars_type)])
+        
+		if(!isOdd(Math.max(...times_to_pars_type))){
+            document.getElementsByClassName("dopari")[0].innerText = "До конца пары"
+        }
+        else{
+            document.getElementsByClassName("dopari")[0].innerText = "До начала пары"
+        }
 		// forEach end
 		document.getElementById('clock').innerHTML = timestr
 		document.title = timestr
