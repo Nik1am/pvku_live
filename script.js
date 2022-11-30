@@ -1,4 +1,4 @@
-
+	var debugoffset = 0
 	var storage = window.localStorage;
 	// [день[группа[массив расписания]]]
 	var shedule = csv2json
@@ -308,7 +308,7 @@
 				document.body.style.cursor = "unset" 
 			}
 		})}
-		let time_with_offset = new Date() - diff;
+		let time_with_offset = new Date() - diff + debugoffset;
 		let b11 = t2u("08:00:00")
 		let l11 = t2u("09:20:00")
 		let b12 = t2u("09:30:00")
@@ -335,7 +335,6 @@
 		var times_to_pars = [];
 		var times_to_pars_type = [];
 		var times_to_pars_unsorted = [];
-		var current_para = 0
 		pars.forEach((element, index) => {
 			// console.log(`Para ${element} | Index ${index} | Type ${index2para_type[index]}`)
 			let dd = element-time_with_offset
@@ -355,7 +354,20 @@
 		else {
 			timestr = u2t(Math.min(...times_to_pars_unsorted))
 		}
-        
+
+		lectures = document.getElementsByClassName('lecture')
+		lecture_current_name = ''
+		for(l=0;l<lectures.length;l++){
+			if (div(15-Math.max(...times_to_pars_type),2) == l){
+				lectures[l].style.color = "var(--accent-color)"
+				lecture_current_name = lectures[l].innerText
+			}
+			else {
+				lectures[l].style.color = "var(--text-color)"
+			}
+		}
+
+        console.log( 1+div(16-Math.max(...times_to_pars_type),2) , "|" , (16-Math.max(...times_to_pars_type)) )
 		if(!isOdd(Math.max(...times_to_pars_type))){
             document.getElementsByClassName("dopari")[0].innerText = "До конца пары"
         }
@@ -364,7 +376,7 @@
         }
 		// forEach end
 		document.getElementById('clock').innerHTML = timestr
-		document.title = timestr
+		document.title = `${timestr} | ${lecture_current_name}`
 		times_to_pars = [];
 		times_to_pars_unsorted = [];
 		times_to_pars_type = [];
