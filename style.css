@@ -44,6 +44,7 @@ body {
 	cursor: wait;
 }
 #colorchanger {
+	line-height: 2em;
 	min-width: min(60vh,60vw);
 	scale: 0;
 	opacity: 0;
@@ -59,6 +60,18 @@ body {
 
 #color-accent , #color-bg , #color-text , #btn-color-accent , #btn-color-bg , #btn-color-text {
 	vertical-align: middle;
+}
+
+#btn-color-accent , #btn-color-bg , #btn-color-text {
+	background-color: var(--bg-color);
+	padding: 10px;
+	border-radius:20px;
+	color: var(--text-color);
+	font-weight: bold;
+	cursor: pointer;
+	transition-duration: 0.3s;
+	border: 2px solid ;
+	border-color: var(--accent-color);
 }
 #styler {
 	min-width: min(60vh,60vw);

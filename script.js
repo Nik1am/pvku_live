@@ -354,7 +354,6 @@
 		else {
 			timestr = u2t(Math.min(...times_to_pars_unsorted))
 		}
-
 		lectures = document.getElementsByClassName('lecture')
 		lecture_current_name = ''
 		for(l=0;l<lectures.length;l++){
