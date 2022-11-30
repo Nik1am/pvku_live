@@ -93,6 +93,55 @@
 		} else {
 			storage.setItem('blur_strength',5);
 		}
+
+		// Проверка заполнены ли ячейки с значением цветов, если нет - то ставит стандартные
+		if(storage.getItem('accent_color') != null){
+			document.querySelector(":root").style.setProperty('--accent-color', storage.getItem('accent_color'))
+		} else {
+			storage.setItem('accent_color', "#FFFFFF");
+		}
+		if(storage.getItem('bg_color') != null){
+			document.querySelector(":root").style.setProperty('--bg-color', storage.getItem('bg_color'))
+		} else {
+			storage.setItem('bg_color', "rgba(0,0,0,0.5)");
+		}
+		if(storage.getItem('text_color') != null){
+			document.querySelector(":root").style.setProperty('--text-color', storage.getItem('text_color'))
+		} else {
+			storage.setItem('text_color', "#FFFFFF");
+		}
+
+		// Функции смены цветов
+		btnColorAccent = document.getElementById("btn-color-accent")
+		colorAccent = document.getElementById("color-accent")
+		btnColorAccent.onclick = () => {
+			root = document.querySelector(":root")
+			root.style.setProperty('--accent-color', colorAccent.value)
+			storage.setItem('accent_color',colorAccent.value);
+		}
+
+		btnColorBg = document.getElementById("btn-color-bg")
+		colorBg = document.getElementById("color-bg")
+		colorBgAlpha = document.getElementById("color-bg-alpha")
+		btnColorBg.onclick = () => {
+			root = document.querySelector(":root")
+			r = parseInt(colorBg.value.slice(-6, -4), 16)
+			g = parseInt(colorBg.value.slice(-4, -2), 16)
+			b = parseInt(colorBg.value.slice(-2), 16)
+			a = colorBgAlpha.value
+			rgba = 'rgba('+r+','+g+','+b+','+a+')'
+			root.style.setProperty('--bg-color', rgba)
+			storage.setItem('bg_color',rgba);
+		}
+		
+		btnColorText = document.getElementById("btn-color-text")
+		colorText = document.getElementById("color-text")
+		btnColorText.onclick = () => {
+			root = document.querySelector(":root")
+			root.style.setProperty('--text-color', colorText.value)
+			storage.setItem('text_color',colorText.value);
+		}
+
 		// Функционал смены фона v2
 		bgFile = document.getElementById("bg-file");
 		bgURL = document.getElementById("bg-url");
@@ -208,8 +257,26 @@
 	//Функции показа/скрытия выбора фона
 	function changeBG() {
 		let styler = document.getElementById("styler")
+		let colorchanger = document.getElementById("colorchanger")
+		let clock = document.getElementsByClassName("clock-box")[0]
+		
+		if(colorchanger.style.scale != 0) {
+			changeColor()
+		}
 		toggle_element_visibility_from_hidden_state(styler)
 		clockToggle()
+	}
+	// 
+	function changeColor() {
+		let colorchanger = document.getElementById("colorchanger")
+		let styler = document.getElementById("styler")
+		let clock = document.getElementsByClassName("clock-box")[0]
+
+		if(styler.style.scale != 0) {
+			changeBG()
+		}
+		clockToggle()
+		toggle_element_visibility_from_hidden_state(colorchanger)
 	}
 	//Целочисельное деление
 	function div(val, by){

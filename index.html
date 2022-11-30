@@ -13,15 +13,16 @@
 	<div>
 		
 	</div>
+	<button id="btn-color" onclick="changeColor()">🎨 Цвет</button>
 	<button id="btn-skin" onclick="changeBG()">🖌️ Фон</button>
 	<button id="btn-group" onclick="showChangeGroup()">👤 Группа</button>
 </div>
-<div class="clock-box">
+<div class="clock-box generic-element">
 	<p class="dopari">До начала/конца пары осталось</p>
 	<p id="clock">...</p>
 </div>
 
-<div class="popup">
+<div class="popup generic-element" >
 	<div id="group-selector-title">Группа: 
 		<select id="group-selector">
 		</select>
@@ -33,7 +34,7 @@
 		<p class="lecture"></p>
 	</div>
 </div>
-<div id="styler">
+<div id="styler" class="generic-element">
 	Выбор фона
 	<div id="bg-url-wrapper">
 		URL:<input id="bg-url">
@@ -48,8 +49,34 @@
 		<img id="bg-preview" src="https://cheems.ml/icon.png">
 	</div>
 	<div id="footer">
-		Размытие<input id="blur-slider" type="range" min="0" max="50" value="5">
+		Размытие фона<input id="blur-slider" type="range" min="0" max="50" value="5">
 	</div>
 </div>
-
+<div id="colorchanger" class="generic-element">
+	<div id="colorchanger-title">
+		Выбор цвета
+	</div>
+	<div id="color-accent-wrapper">
+		<div>Границы:</div>
+		<div>
+			<input type="color" id="color-accent" value="#FFFFFF">
+			<button id="btn-color-accent">Применить</button>
+		</div>
+	</div>
+	<div id="color-bg-wrapper">
+		<div>Фон элементов:</div>
+		<div>
+			<input type="range" id="color-bg-alpha" title="Прозрачность" min="0" , max="1" , step="0.01" , value="0.5">
+			<input type="color" id="color-bg" value="#000000">
+			<button id="btn-color-bg">Применить</button>
+		</div>
+	</div>
+	<div id="color-text-wrapper">
+		<div>Текст:</div>
+		<div>
+			<input type="color" id="color-text" value="#FFFFFF">
+			<button id="btn-color-text">Применить</button>
+		</div>
+	</div>
+</div>
 </body>
