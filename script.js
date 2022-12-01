@@ -1,3 +1,20 @@
+	let b11 = t2u("08:00:00")
+	let l11 = t2u("09:20:00")
+	let b12 = t2u("09:30:00")
+	let l12 = t2u("10:50:00")
+	let b13 = t2u("11:10:00")
+	let l13 = t2u("12:30:00")
+	let b14 = t2u("12:40:00")
+	let l14 = t2u("14:00:00")
+	
+	let b21 = t2u("12:40:00")
+	let l21 = t2u("14:00:00")
+	let b22 = t2u("14:10:00")
+	let l22 = t2u("15:30:00")
+	let b23 = t2u("15:30:00")
+	let l23 = t2u("17:05:00")
+	let b24 = t2u("17:15:00")
+	let l24 = t2u("18:35:00")
 	var debugoffset = 0
 	var storage = window.localStorage;
 	// [день[группа[массив расписания]]]
@@ -289,6 +306,7 @@
     		return int;
   		} else return `0${int}`;
 	};
+		
 	// Основная функция часов, в начале из-за не стабильного API происходит получение отклонения времени несколько раз(нужно для точного отображения времени)
 	function update() {
 		if (document.getElementById("myspan").childNodes[0].textContent == "notdiff"){
@@ -309,23 +327,7 @@
 			}
 		})}
 		let time_with_offset = new Date() - diff + debugoffset;
-		let b11 = t2u("08:00:00")
-		let l11 = t2u("09:20:00")
-		let b12 = t2u("09:30:00")
-		let l12 = t2u("10:50:00")
-		let b13 = t2u("11:10:00")
-		let l13 = t2u("12:30:00")
-		let b14 = t2u("12:40:00")
-		let l14 = t2u("14:00:00")
-
-		let b21 = t2u("12:40:00")
-		let l21 = t2u("14:00:00")
-		let b22 = t2u("14:10:00")
-		let l22 = t2u("15:30:00")
-		let b23 = t2u("15:30:00")
-		let l23 = t2u("17:05:00")
-		let b24 = t2u("17:15:00")
-		let l24 = t2u("18:35:00")
+		
 		var weekday = new Date().getDay()
 		if (weekday == 0) {
 			weekday = 7;
